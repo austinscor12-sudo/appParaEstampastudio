@@ -1,24 +1,38 @@
-// Toda la matemática del negocio está acá (fácil de cambiar).
+// Toda la matemática del negocio está acá.
 const Calculos = {
-  costoTotal(p){ return (Number(p.cantidad)||0) * ((Number(p.costoPrenda)||0) + (Number(p.costoDiseno)||0)); },
-  // Precio sugerido = costo + margen%
-  sugerido(p, margen){ return this.costoTotal(p) * (1 + margen/100); },
-  // Lo que queda en el negocio = lo cobrado - el costo
-  ganancia(p){ return (Number(p.cobrado)||0) - this.costoTotal(p); },
-  // % de ganancia sobre el costo
-  porcentaje(p){ const c = this.costoTotal(p); return c > 0 ? this.ganancia(p)/c*100 : 0; },
-  mes(p){ return (p.fecha||'').slice(0,7); }, // "2026-11"
-  totales(lista, margen){
-    const t = {pedidos:lista.length, unidades:0, costo:0, sugerido:0, cobrado:0, ganancia:0, falta:0};
+  gastoPrenda(p){ return p.prendaPropia ? 0 : (Number(p.cantidad)||0) * (Number(p.costoPrenda)||0); },
+  gastoDiseno(p){
+    const c = Number(p.costoDiseno)||0;
+    return p.disenoModo === 'total' ? c : (Number(p.cantidad)||0) * c;
+  },
+  gasto(p){ return this.gastoPrenda(p) + this.gastoDiseno(p); },
+  ganancia(p){ return (Number(p.cobrado)||0) - this.gasto(p); },
+  mes(p){ return (p.fecha||'').slice(0,7); },
+
+  // Tu método: cobrado - (gastos + % del negocio sobre los gastos) = a repartir ÷ socios
+  reparto(lista, margen, socios){
+    const r = {cobrado:0, gastos:0, unidades:0, pendientes:0};
     lista.forEach(p=>{
-      t.unidades += Number(p.cantidad)||0;
-      t.costo += this.costoTotal(p);
-      t.sugerido += this.sugerido(p, margen);
-      t.cobrado += Number(p.cobrado)||0;
-      t.ganancia += this.ganancia(p);
-      if(p.estado !== 'entregado') t.falta++;
+      r.cobrado += Number(p.cobrado)||0;
+      r.gastos += this.gasto(p);
+      r.unidades += Number(p.cantidad)||0;
+      if(p.estado !== 'entregado') r.pendientes++;
     });
-    t.porcentaje = t.costo > 0 ? t.ganancia/t.costo*100 : 0;
-    return t;
+    r.reserva = r.gastos * (margen/100);
+    r.neta = r.cobrado - r.gastos - r.reserva;
+    r.porSocio = r.neta / Math.max(1, socios);
+    return r;
+  },
+
+  porCliente(lista){
+    const m = {};
+    lista.forEach(p=>{
+      const k = (p.cliente||'Sin nombre').trim().toLowerCase();
+      const c = m[k] ||= {nombre:(p.cliente||'Sin nombre').trim(), pedidos:0, unidades:0, cobrado:0, gastos:0, pendientes:0};
+      c.pedidos++; c.unidades += Number(p.cantidad)||0;
+      c.cobrado += Number(p.cobrado)||0; c.gastos += this.gasto(p);
+      if(p.estado !== 'entregado') c.pendientes++;
+    });
+    return Object.values(m).sort((a,b)=>b.cobrado-a.cobrado);
   }
 };

@@ -3,91 +3,134 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Control de pedidos</title>
+  <title>Estampa Studio · Pedidos</title>
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
   <header class="top">
-    <h1>👕 Control de pedidos</h1>
+    <div class="marca"><span class="logo">🎨</span><div><h1>Estampa Studio</h1><small>Control de pedidos y ganancias</small></div></div>
     <div class="acciones">
-      <label>Margen del negocio %
-        <input type="number" id="margen" min="0" step="1" value="30">
-      </label>
-      <button id="btnExportar" class="sec">Exportar copia</button>
-      <label class="btn sec">Importar<input type="file" id="fileImportar" accept=".json" hidden></label>
+      <button id="btnAjustes" class="sec">⚙️ Ajustes</button>
+      <button id="btnNuevo">+ Nuevo pedido</button>
     </div>
   </header>
 
   <main>
-    <section class="resumen" id="resumen"></section>
-
-    <section class="card">
-      <h2 id="tituloForm">Nuevo pedido</h2>
-      <form id="form" autocomplete="off">
-        <input type="hidden" id="id">
-        <label>Fecha <input type="date" id="fecha" required></label>
-        <label>Tipo
-          <select id="tipo">
-            <option>Remera</option><option>Chomba</option><option>Tela</option><option>Otro</option>
-          </select>
-        </label>
-        <label>Color <input type="text" id="color" placeholder="Negro, blanco..."></label>
-        <label>Cantidad <input type="number" id="cantidad" min="1" step="any" value="1" required></label>
-        <label>Comprado en <input type="text" id="lugar" placeholder="Dónde compraste"></label>
-        <label>Para quién <input type="text" id="cliente" placeholder="Cliente"></label>
-        <label>Estado
-          <select id="estado">
-            <option value="pedido">Pedido (sin hacer)</option>
-            <option value="falta">Falta entregar</option>
-            <option value="entregado">Entregado</option>
-          </select>
-        </label>
-        <label>Diseño
-          <select id="diseno">
-            <option>Ninguno</option><option>DTF</option><option>Sublimación</option>
-          </select>
-        </label>
-        <label>Costo prenda (c/u) <input type="number" id="costoPrenda" min="0" step="any" value="0"></label>
-        <label>Costo diseño (c/u) <input type="number" id="costoDiseno" min="0" step="any" value="0"></label>
-        <label>Total cobrado <input type="number" id="cobrado" min="0" step="any" value="0"></label>
-        <label class="ancho">Notas <input type="text" id="notas"></label>
-
-        <div class="calc" id="calcVivo"></div>
-
-        <div class="botones">
-          <button type="submit" id="btnGuardar">Guardar</button>
-          <button type="button" id="btnCancelar" class="sec" hidden>Cancelar edición</button>
-        </div>
-      </form>
+    <section class="filtros">
+      <label>Mes <select id="fMes"></select></label>
+      <label>Producto <select id="fProducto"></select></label>
+      <label>Estado
+        <select id="fEstado">
+          <option value="">Todos</option>
+          <option value="pedido">Sin hacer</option>
+          <option value="falta">Falta entregar</option>
+          <option value="entregado">Entregado</option>
+        </select>
+      </label>
+      <label class="grow">Buscar <input type="search" id="fBuscar" placeholder="Cliente, color, lugar..."></label>
     </section>
 
-    <section class="card">
-      <div class="filtros">
-        <label>Mes <select id="fMes"></select></label>
-        <label>Estado
-          <select id="fEstado">
-            <option value="">Todos</option>
-            <option value="pedido">Pedido (sin hacer)</option>
-            <option value="falta">Falta entregar</option>
-            <option value="entregado">Entregado</option>
-          </select>
-        </label>
-        <label>Buscar <input type="search" id="fBuscar" placeholder="Cliente, color, lugar..."></label>
-      </div>
-      <div class="tabla-wrap">
+    <section>
+      <h2>💰 Reparto de ganancias <small id="subReparto"></small></h2>
+      <div class="reparto" id="reparto"></div>
+      <div class="stats" id="stats"></div>
+    </section>
+
+    <section>
+      <h2>📋 Pedidos</h2>
+      <div class="card tabla-wrap">
         <table>
-          <thead>
-            <tr>
-              <th>Fecha</th><th>Tipo</th><th>Color</th><th>Cant.</th><th>Comprado en</th>
-              <th>Para</th><th>Diseño</th><th>Estado</th><th>Costo total</th>
-              <th>Sugerido</th><th>Cobrado</th><th>Ganancia</th><th></th>
-            </tr>
-          </thead>
+          <thead><tr>
+            <th>Fecha</th><th>Cliente</th><th>Producto</th><th>Cant.</th><th>Prenda</th><th>Diseño</th>
+            <th>Estado</th><th>Gasto</th><th>Cobrado</th><th>Ganancia</th><th></th>
+          </tr></thead>
           <tbody id="tbody"></tbody>
         </table>
       </div>
     </section>
+
+    <section>
+      <h2>👥 Por cliente</h2>
+      <div class="card tabla-wrap">
+        <table>
+          <thead><tr><th>Cliente</th><th>Pedidos</th><th>Unidades</th><th>Total cobrado</th><th>Gastos</th><th>Sin entregar</th></tr></thead>
+          <tbody id="tbClientes"></tbody>
+        </table>
+      </div>
+    </section>
   </main>
+
+  <!-- FORMULARIO -->
+  <dialog id="dlgForm">
+    <form id="form" autocomplete="off">
+      <h2 id="tituloForm">Nuevo pedido</h2>
+      <input type="hidden" id="id">
+
+      <fieldset><legend>Pedido</legend>
+        <label>Fecha <input type="date" id="fecha" required></label>
+        <label>Para quién <input type="text" id="cliente" placeholder="Cliente" required></label>
+        <label>Estado
+          <select id="estado">
+            <option value="pedido">Sin hacer</option>
+            <option value="falta">Falta entregar</option>
+            <option value="entregado">Entregado</option>
+          </select>
+        </label>
+      </fieldset>
+
+      <fieldset><legend>Producto</legend>
+        <label>Qué es <select id="producto"></select></label>
+        <label>Color <input type="text" id="color" placeholder="Negro, blanco..."></label>
+        <label>Talle / medida <input type="text" id="talle" list="talles" placeholder="M, XL, 11oz...">
+          <datalist id="talles"><option>XS</option><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option><option>Niño 4</option><option>Niño 8</option><option>Niño 12</option></datalist>
+        </label>
+        <label>Cantidad <input type="number" id="cantidad" min="1" step="any" value="1" required></label>
+      </fieldset>
+
+      <fieldset><legend>Compra de la prenda / producto</legend>
+        <label class="check ancho"><input type="checkbox" id="prendaPropia"> El cliente trae su propia prenda (no la compramos)</label>
+        <label>Comprado en <input type="text" id="lugar" placeholder="Dónde compraste"></label>
+        <label>Precio c/u <input type="number" id="costoPrenda" min="0" step="any" value="0"></label>
+      </fieldset>
+
+      <fieldset><legend>Diseño</legend>
+        <label>Tipo
+          <select id="diseno"><option>Ninguno</option><option>DTF</option><option>Sublimación</option><option>Vinilo</option><option>Otro</option></select>
+        </label>
+        <label>Hecho en <input type="text" id="disenoLugar" placeholder="Dónde lo mandaste"></label>
+        <label>Costo <input type="number" id="costoDiseno" min="0" step="any" value="0"></label>
+        <label>El costo es
+          <select id="disenoModo"><option value="unidad">por unidad</option><option value="total">total del pedido</option></select>
+        </label>
+      </fieldset>
+
+      <fieldset><legend>Cobro</legend>
+        <label>Total cobrado <input type="number" id="cobrado" min="0" step="any" value="0"></label>
+        <label class="grow">Notas <input type="text" id="notas"></label>
+      </fieldset>
+
+      <div class="calc" id="calcVivo"></div>
+      <div class="botones">
+        <button type="button" id="btnCancelar" class="sec">Cancelar</button>
+        <button type="submit">Guardar pedido</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- AJUSTES -->
+  <dialog id="dlgAjustes">
+    <h2>Ajustes</h2>
+    <div class="ajustes">
+      <label>Porcentaje que queda para el negocio (sobre los gastos) %
+        <input type="number" id="margen" min="0" step="any" value="30"></label>
+      <label>Cantidad de socios (para dividir)
+        <input type="number" id="socios" min="1" step="1" value="3"></label>
+      <hr>
+      <button id="btnExportar" class="sec">⬇ Exportar copia de seguridad</button>
+      <label class="btn sec">⬆ Importar copia<input type="file" id="fileImportar" accept=".json" hidden></label>
+    </div>
+    <div class="botones"><button id="btnCerrarAjustes">Listo</button></div>
+  </dialog>
 
   <script src="js/calculos.js"></script>
   <script src="js/storage.js"></script>

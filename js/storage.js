@@ -1,8 +1,8 @@
 // Capa de datos. Hoy usa localStorage (navegador).
-// Para pasar a Firestore después, solo reescribí estas funciones
-// manteniendo los mismos nombres (todas son async).
+// Para pasar a Firestore después, solo reescribí estas funciones (mismos nombres, todas async).
 const Storage = {
   KEY: 'pedidos_v1', CFG: 'pedidos_cfg_v1',
+  DEF: {margen:30, socios:3},
   async listar(){ try{ return JSON.parse(localStorage.getItem(this.KEY)) || []; }catch{ return []; } },
   async _guardarTodo(lista){ localStorage.setItem(this.KEY, JSON.stringify(lista)); },
   async guardar(p){
@@ -13,6 +13,6 @@ const Storage = {
   },
   async eliminar(id){ await this._guardarTodo((await this.listar()).filter(x=>x.id!==id)); },
   async reemplazarTodo(lista){ await this._guardarTodo(lista); },
-  async getConfig(){ try{ return JSON.parse(localStorage.getItem(this.CFG)) || {margen:30}; }catch{ return {margen:30}; } },
+  async getConfig(){ try{ return {...this.DEF, ...JSON.parse(localStorage.getItem(this.CFG))}; }catch{ return {...this.DEF}; } },
   async setConfig(c){ localStorage.setItem(this.CFG, JSON.stringify(c)); }
 };
