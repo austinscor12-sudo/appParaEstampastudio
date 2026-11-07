@@ -65,3 +65,59 @@ hr{border:0;border-top:1px solid var(--bor);width:100%}
 .caja{padding:28px;text-align:center;max-width:340px;display:grid;gap:12px;justify-items:center}
 .caja p{margin:0;color:var(--mut);font-size:.9rem}
 .usuario{align-self:center;font-size:.8rem;opacity:.9}
+
+/* ===== Animaciones ===== */
+@keyframes subir{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@keyframes pop{from{opacity:0;transform:scale(.94) translateY(10px)}to{opacity:1;transform:none}}
+@keyframes fundido{from{opacity:0}to{opacity:1}}
+@keyframes flotar{from{transform:translate(0,0)}to{transform:translate(-40px,30px)}}
+@keyframes flota-logo{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes brillo{0%{background-position:0% 50%}100%{background-position:200% 50%}}
+body::before{content:"";position:fixed;inset:-20%;z-index:-1;pointer-events:none;background:radial-gradient(520px 320px at 82% 12%,rgba(34,196,166,.14),transparent 70%);animation:flotar 14s ease-in-out infinite alternate}
+.top{animation:fundido .6s ease both}
+main>section{animation:subir .6s cubic-bezier(.2,.7,.2,1) both}
+main>section:nth-child(2){animation-delay:.08s}main>section:nth-child(3){animation-delay:.16s}main>section:nth-child(4){animation-delay:.24s}
+tbody tr{animation:subir .4s ease both;animation-delay:calc(var(--i,0)*40ms)}
+.paso{transition:transform .25s,border-color .25s,box-shadow .25s}
+.paso:hover{transform:translateY(-4px);border-color:var(--pri);box-shadow:0 8px 24px rgba(34,196,166,.18)}
+.paso.dest{background:linear-gradient(110deg,var(--pri2),var(--pri),#5eead4,var(--pri),var(--pri2));background-size:200% 100%;animation:brillo 5s linear infinite}
+.stat{transition:transform .2s,border-color .2s}.stat:hover{transform:translateY(-2px);border-color:var(--pri)}
+button,.btn,.est{transition:transform .15s,filter .2s,box-shadow .2s}
+button:hover{box-shadow:0 4px 16px rgba(34,196,166,.3)}
+button:active,.btn:active{transform:scale(.95)}
+.top button.sec:hover,button.sec:hover{border-color:var(--pri);box-shadow:none}
+.marca img{transition:transform .4s}.marca:hover img{transform:rotate(-8deg) scale(1.08)}
+.login .caja{animation:pop .5s cubic-bezier(.2,.8,.2,1) both}
+.login .caja img{animation:flota-logo 3.2s ease-in-out infinite}
+dialog[open]{animation:pop .28s cubic-bezier(.2,.8,.2,1)}
+dialog[open]::backdrop{animation:fundido .25s ease}
+input,select{transition:border-color .2s,box-shadow .2s}
+input:focus,select:focus{box-shadow:0 0 0 3px rgba(34,196,166,.25)}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+
+/* ===== Celular ===== */
+dialog{max-height:92vh;overflow:auto}
+@media(max-width:760px){
+  input,select{font-size:16px}
+  .top{padding:10px 12px}.marca small{display:none}
+  .acciones{width:100%;justify-content:space-between;align-items:center}
+  .usuario{display:none}
+  .filtros>label{flex:1 1 140px}
+  .paso{flex:1 1 calc(50% - 8px);min-width:0}.paso.dest{flex-basis:100%}.paso b{font-size:1.15rem}
+  dialog{width:100vw;max-height:100vh;height:100vh;border-radius:0;padding:16px}
+  fieldset{grid-template-columns:1fr 1fr}
+  .botones{position:sticky;bottom:-16px;background:var(--card);padding:10px 0}
+
+  .card.tabla-wrap{background:none;border:0;box-shadow:none;overflow:visible}
+  table,tbody,tr,td{display:block;width:100%}
+  thead{display:none}
+  tbody tr{background:var(--card);border:1px solid var(--bor);border-radius:14px;margin-bottom:12px;padding:6px 14px;box-shadow:var(--sh)}
+  tbody tr:hover{background:var(--card)}
+  td{display:grid;grid-template-columns:90px 1fr;align-items:center;gap:2px 10px;border:0;padding:7px 0;text-align:right;border-bottom:1px dashed var(--bor)}
+  td::before{content:attr(data-label);color:var(--mut);font-size:.7rem;text-transform:uppercase;font-weight:600;text-align:left}
+  td small{grid-column:2}
+  td.num{text-align:right}
+  #tbody td:last-child,td.vacio{display:block;border:0}
+  #tbody td:last-child::before,td.vacio::before{display:none}
+  .acc{justify-content:flex-end}
+}

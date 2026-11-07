@@ -105,6 +105,35 @@ function render(){
     `<tr><td><b>${esc(c.nombre)}</b></td><td>${c.pedidos}</td><td>${c.unidades}</td>
      <td class="num pos">${money(c.cobrado)}</td><td class="num">${money(c.gastos)}</td><td>${c.pendientes||'—'}</td></tr>`
   ).join('') || '<tr><td colspan="6" class="vacio">Sin datos</td></tr>';
+  animarReparto(r); etiquetar($('tbody')); etiquetar($('tbClientes'));
+}
+
+
+// Pone el nombre de cada columna en cada celda (para verlo como tarjetas en el celular)
+function etiquetar(tbody){
+  const ths = [...tbody.closest('table').querySelectorAll('thead th')].map(t=>t.textContent);
+  [...tbody.rows].forEach((tr,i)=>{
+    tr.style.setProperty('--i', Math.min(i,12));
+    [...tr.cells].forEach((td,j)=>{ if(ths[j]) td.dataset.label = ths[j]; });
+  });
+}
+
+// Los números del reparto "corren" hasta el valor nuevo
+let prevRep = [0,0,0,0,0];
+function animarReparto(r){
+  const vals = [r.cobrado, r.gastos, r.reserva, r.neta, r.porSocio];
+  const quieto = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  document.querySelectorAll('#reparto b').forEach((el,i)=>{
+    if(quieto) return;
+    const from = prevRep[i], to = vals[i], t0 = performance.now();
+    const paso = t => {
+      const k = Math.min(1, (t-t0)/650), e = 1 - Math.pow(1-k, 3);
+      el.textContent = money(from + (to-from)*e);
+      if(k < 1) requestAnimationFrame(paso);
+    };
+    requestAnimationFrame(paso);
+  });
+  prevRep = vals;
 }
 
 async function cargar(){ datos = await Storage.listar(); llenarFiltros(); render(); }
