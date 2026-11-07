@@ -1,21 +1,23 @@
-:root{--bg:#f3f4f8;--card:#fff;--txt:#1b2030;--mut:#6b7385;--pri:#6d4aff;--pri2:#9b5cff;--bor:#e4e7ee;--ok:#12a150;--mal:#dc2626;--warn:#d97706;--sh:0 2px 10px rgba(20,25,50,.06)}
-@media(prefers-color-scheme:dark){:root{--bg:#0f1117;--card:#181b24;--txt:#eceef5;--mut:#9aa1b4;--bor:#272b38;--pri:#8a6dff;--pri2:#b07bff;--ok:#4ade80;--mal:#f87171;--warn:#fbbf24;--sh:none}}
+/* Paleta Estampa Studio: azul noche + verde azulado */
+:root{color-scheme:dark;--bg:#070b16;--card:#0e1526;--txt:#f1f5f9;--mut:#8b97ad;--pri:#22c4a6;--pri2:#14a58f;--onpri:#04211b;--bor:#1d2a44;--ok:#34d399;--mal:#fb7185;--warn:#fbbf24;--sh:0 4px 18px rgba(0,0,0,.35);--tit:"Anton","Bebas Neue",Impact,"Arial Narrow",sans-serif}
 *{box-sizing:border-box}
-body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--bg);color:var(--txt);line-height:1.4}
-h1{font-size:1.2rem;margin:0}h2{font-size:1.05rem;margin:0 0 10px;display:flex;gap:8px;align-items:baseline}
+body{margin:0;font-family:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;background:radial-gradient(900px 420px at 15% -5%,rgba(34,196,166,.20),transparent 70%),var(--bg);background-attachment:fixed;color:var(--txt);line-height:1.4}
+h1{font-family:var(--tit);font-weight:400;font-size:1.5rem;letter-spacing:.02em;text-transform:uppercase;margin:0;line-height:1}h2{font-family:var(--tit);font-weight:400;letter-spacing:.03em;text-transform:uppercase;font-size:1.15rem;margin:0 0 10px;display:flex;gap:8px;align-items:baseline}
 h2 small{font-weight:400;color:var(--mut);font-size:.8rem}
-.top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:14px 22px;background:linear-gradient(120deg,var(--pri),var(--pri2));color:#fff}
-.marca{display:flex;gap:12px;align-items:center}.marca small{opacity:.85}
-.logo{font-size:1.8rem;background:rgba(255,255,255,.2);border-radius:12px;padding:4px 8px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:14px 22px;background:rgba(7,11,22,.92);border-bottom:1px solid var(--bor);color:#fff;position:sticky;top:0;z-index:20;backdrop-filter:blur(8px)}
+.marca{display:flex;gap:12px;align-items:center}.marca small{color:var(--pri);font-weight:600;font-size:.75rem}
+.logo{font-size:1.8rem;background:rgba(255,255,255,.1);border-radius:12px;padding:4px 8px}
+.marca img,.caja img{width:44px;height:44px;object-fit:contain;border-radius:10px;background:#0b1224;border:1px solid var(--bor);padding:3px}
+.caja img{width:84px;height:84px}
 .acciones{display:flex;gap:8px}
 main{max-width:1250px;margin:0 auto;padding:18px;display:grid;gap:22px}
 input,select,button,.btn{font:inherit;padding:9px 11px;border-radius:10px;border:1px solid var(--bor);background:var(--card);color:var(--txt)}
 input:focus,select:focus{outline:2px solid var(--pri);outline-offset:-1px}
-button,.btn{background:var(--pri);color:#fff;border:0;cursor:pointer;font-weight:600;display:inline-block;text-align:center}
+button,.btn{background:var(--pri);color:var(--onpri);border:0;cursor:pointer;font-weight:600;display:inline-block;text-align:center}
 button:hover{filter:brightness(1.08)}
-.top button.sec{background:rgba(255,255,255,.18);color:#fff;border:0}
+.top button.sec{background:transparent;color:var(--txt);border:1px solid var(--bor)}
 button.sec,.btn.sec{background:transparent;color:var(--txt);border:1px solid var(--bor)}
-button.mini{padding:5px 9px;font-size:.78rem}button.del{background:var(--mal)}
+button.mini{padding:5px 9px;font-size:.78rem}button.del{background:var(--mal);color:#fff}
 label{display:flex;flex-direction:column;gap:4px;font-size:.78rem;color:var(--mut);font-weight:600}
 .card{background:var(--card);border:1px solid var(--bor);border-radius:14px;box-shadow:var(--sh)}
 .filtros{display:flex;flex-wrap:wrap;gap:12px;background:var(--card);border:1px solid var(--bor);border-radius:14px;padding:12px;box-shadow:var(--sh)}
@@ -25,8 +27,8 @@ label{display:flex;flex-direction:column;gap:4px;font-size:.78rem;color:var(--mu
 .paso{flex:1;min-width:140px;background:var(--card);border:1px solid var(--bor);border-radius:14px;padding:14px;box-shadow:var(--sh)}
 .paso span{display:block;font-size:.75rem;color:var(--mut);margin-bottom:4px}
 .paso b{font-size:1.35rem}
-.paso.dest{background:linear-gradient(135deg,var(--pri),var(--pri2));border:0;color:#fff}
-.paso.dest span{color:rgba(255,255,255,.85)}
+.paso.dest{background:linear-gradient(135deg,var(--pri),var(--pri2));border:0;color:var(--onpri)}
+.paso.dest span{color:rgba(4,33,27,.8);font-weight:600}
 .op{align-self:center;font-weight:700;color:var(--mut);font-size:1.1rem}
 .stats{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
 .stat{background:var(--card);border:1px solid var(--bor);border-radius:99px;padding:5px 14px;font-size:.82rem;color:var(--mut)}
@@ -35,8 +37,8 @@ label{display:flex;flex-direction:column;gap:4px;font-size:.78rem;color:var(--mu
 .tabla-wrap{overflow-x:auto}
 table{width:100%;border-collapse:collapse;font-size:.86rem}
 th,td{padding:10px 12px;border-bottom:1px solid var(--bor);text-align:left;vertical-align:middle}
-th{font-size:.7rem;text-transform:uppercase;letter-spacing:.04em;color:var(--mut);white-space:nowrap}
-tr:last-child td{border-bottom:0}tbody tr:hover{background:rgba(109,74,255,.05)}
+th{font-size:.68rem;text-transform:uppercase;letter-spacing:.04em;color:var(--mut);white-space:nowrap}
+tr:last-child td{border-bottom:0}tbody tr:hover{background:rgba(34,196,166,.07)}
 td small{display:block;color:var(--mut)}
 .prod{white-space:nowrap}
 .num{white-space:nowrap;text-align:right}
