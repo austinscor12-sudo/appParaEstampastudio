@@ -7,9 +7,19 @@
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
+  <div id="login" class="login">
+    <div class="card caja">
+      <div class="logo">🎨</div>
+      <h2>Estampa Studio</h2>
+      <p id="loginMsg">Entrá con tu cuenta de Google para ver los pedidos.</p>
+      <button id="btnLogin">Entrar con Google</button>
+    </div>
+  </div>
   <header class="top">
     <div class="marca"><span class="logo">🎨</span><div><h1>Estampa Studio</h1><small>Control de pedidos y ganancias</small></div></div>
     <div class="acciones">
+      <span id="usuario" class="usuario"></span>
+      <button id="btnSalir" class="sec">Salir</button>
       <button id="btnAjustes" class="sec">⚙️ Ajustes</button>
       <button id="btnNuevo">+ Nuevo pedido</button>
     </div>
@@ -126,6 +136,7 @@
       <label>Cantidad de socios (para dividir)
         <input type="number" id="socios" min="1" step="1" value="3"></label>
       <hr>
+      <button id="btnMigrar" class="sec">☁️ Subir a la nube los datos guardados en este navegador</button>
       <button id="btnExportar" class="sec">⬇ Exportar copia de seguridad</button>
       <label class="btn sec">⬆ Importar copia<input type="file" id="fileImportar" accept=".json" hidden></label>
     </div>

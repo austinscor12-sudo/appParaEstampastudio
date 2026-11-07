@@ -152,10 +152,39 @@ $('fileImportar').addEventListener('change', async e=>{
   e.target.value = '';
 });
 
+function mostrarLogin(msg){
+  $('login').hidden = false;
+  if(msg) $('loginMsg').textContent = msg;
+}
+
+$('btnLogin').onclick = async () => {
+  try{ await Storage.entrar(); }catch(e){ mostrarLogin('No se pudo iniciar sesión (' + (e.code||e.message) + ')'); }
+};
+$('btnSalir').onclick = () => Storage.salir();
+$('btnMigrar').onclick = async () => {
+  if(!confirm('Esto sube a la nube los pedidos que había en este navegador. ¿Seguir?')) return;
+  try{ const n = await Storage.migrarLocal(); alert(n + ' pedidos subidos.'); await cargar(); }
+  catch(e){ alert('Error: ' + (e.code||e.message)); }
+};
+
 (async function init(){
   const opts = Object.entries(PRODUCTOS).map(([k,v])=>`<option value="${k}">${v} ${k}</option>`).join('');
   $('producto').innerHTML = opts;
   $('fProducto').innerHTML = '<option value="">Todos</option>' + opts;
-  cfg = await Storage.getConfig(); $('margen').value = cfg.margen; $('socios').value = cfg.socios;
-  await cargar();
+  try{
+    await Storage.iniciar(async user => {
+      if(!user){ $('usuario').textContent = ''; return mostrarLogin(); }
+      try{
+        cfg = await Storage.getConfig(); $('margen').value = cfg.margen; $('socios').value = cfg.socios;
+        await cargar();
+        $('usuario').textContent = user.email;
+        $('login').hidden = true;
+      }catch(e){
+        await Storage.salir();
+        mostrarLogin(e.code === 'permission-denied'
+          ? 'Ese correo no tiene permiso para entrar. Probá con otra cuenta.'
+          : 'Error al cargar los datos (' + (e.code||e.message) + ')');
+      }
+    });
+  }catch(e){ mostrarLogin('No se pudo conectar con Firebase. Revisá tu internet.'); }
 })();
