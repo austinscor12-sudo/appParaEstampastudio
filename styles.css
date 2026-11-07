@@ -1,0 +1,30 @@
+:root{--bg:#f4f5f7;--card:#fff;--txt:#1d2430;--mut:#6b7280;--pri:#2563eb;--bor:#e2e5ea;--ok:#15803d;--mal:#b91c1c;--warn:#b45309}
+@media(prefers-color-scheme:dark){:root{--bg:#12151a;--card:#1b2028;--txt:#e8ebf0;--mut:#9aa3b2;--bor:#2d3440;--pri:#5b8cff;--ok:#4ade80;--mal:#f87171;--warn:#fbbf24}}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,sans-serif;background:var(--bg);color:var(--txt)}
+.top{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:center;padding:14px 20px;background:var(--card);border-bottom:1px solid var(--bor)}
+h1{font-size:1.3rem;margin:0}h2{font-size:1.05rem;margin:0 0 12px}
+main{max-width:1200px;margin:0 auto;padding:16px;display:grid;gap:16px}
+.card{background:var(--card);border:1px solid var(--bor);border-radius:12px;padding:16px}
+.acciones{display:flex;gap:10px;align-items:end;flex-wrap:wrap}
+label{display:flex;flex-direction:column;gap:4px;font-size:.8rem;color:var(--mut)}
+input,select,button,.btn{font:inherit;padding:8px 10px;border-radius:8px;border:1px solid var(--bor);background:var(--bg);color:var(--txt)}
+button,.btn{background:var(--pri);color:#fff;border:0;cursor:pointer;text-align:center}
+button.sec,.btn.sec{background:transparent;color:var(--txt);border:1px solid var(--bor)}
+button.mini{padding:4px 8px;font-size:.8rem}
+button.del{background:var(--mal)}
+form{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}
+.ancho{grid-column:1/-1}
+.calc{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:18px;padding:10px;border-radius:8px;background:var(--bg);font-size:.9rem}
+.botones{grid-column:1/-1;display:flex;gap:8px}
+.resumen{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}
+.kpi{background:var(--card);border:1px solid var(--bor);border-radius:12px;padding:12px}
+.kpi span{display:block;font-size:.75rem;color:var(--mut)}.kpi b{font-size:1.25rem}
+.filtros{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:12px}
+.tabla-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:.88rem}
+th,td{padding:8px;border-bottom:1px solid var(--bor);text-align:left;white-space:nowrap}
+th{color:var(--mut);font-weight:600;font-size:.75rem}
+.pos{color:var(--ok)}.neg{color:var(--mal)}
+.tag{padding:2px 8px;border-radius:99px;font-size:.75rem;border:1px solid var(--bor)}
+.tag.pedido{color:var(--mal)}.tag.falta{color:var(--warn)}.tag.entregado{color:var(--ok)}
